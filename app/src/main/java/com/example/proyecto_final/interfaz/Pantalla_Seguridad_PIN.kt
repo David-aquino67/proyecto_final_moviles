@@ -38,7 +38,6 @@ fun SecurityScreen(viewModel: AppViewModel) {
             )
         }
 
-        // Botón de Control de Puerta (PIN Access)
         item {
             Card(
                 modifier = Modifier
@@ -73,15 +72,12 @@ fun SecurityScreen(viewModel: AppViewModel) {
     }
 
     if (pinDialogVisible) {
-        // Enviar el PIN al ViewModel/UseCase
         PinInputDialog(onDismiss = { pinDialogVisible = false }) { pin ->
             println("PIN enviado al sistema: $pin")
-            // Aquí iría la llamada a ValidatePinAccessUseCase(pin)
         }
     }
 }
 
-// Componente: Diálogo para ingresar el PIN
 @Composable
 fun PinInputDialog(onDismiss: () -> Unit, onPinConfirmed: (String) -> Unit) {
     var pinValue by remember { mutableStateOf("") }
@@ -120,7 +116,6 @@ fun PinInputDialog(onDismiss: () -> Unit, onPinConfirmed: (String) -> Unit) {
     )
 }
 
-// Componente: Tarjeta de Estado del Sensor
 @Composable
 fun SecurityStatusCard(sensor: SecurityState) {
     val icon = when {

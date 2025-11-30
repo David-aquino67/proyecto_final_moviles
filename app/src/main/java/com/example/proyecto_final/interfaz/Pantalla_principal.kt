@@ -26,15 +26,12 @@ fun HomeScreen(viewModel: AppViewModel) {
     val devices by viewModel.devices.collectAsState()
     val securityStatus by viewModel.securityStatus.collectAsState()
 
-    // Lógica para las métricas
     val activeLights = devices.count { it.type == "Light" && it.isActive }
     val totalAlerts = securityStatus.count { it.isOpen || it.hasMotion }
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
-
-        // Tarjeta de Bienvenida y Resumen
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = DarkBlue),
@@ -48,7 +45,6 @@ fun HomeScreen(viewModel: AppViewModel) {
         }
         Spacer(Modifier.height(20.dp))
 
-        // Grid de Métricas
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -71,7 +67,6 @@ fun HomeScreen(viewModel: AppViewModel) {
         }
         Spacer(Modifier.height(20.dp))
 
-        // Tarjeta de Estado de Seguridad (Clickeable para ir a la pantalla de seguridad)
         val securityColor = if (totalAlerts > 0) AlertRed else SuccessGreen
         val securityText = if (totalAlerts > 0) "$totalAlerts Alerta Activa" else "Sistema Seguro"
 
@@ -103,7 +98,6 @@ fun HomeScreen(viewModel: AppViewModel) {
     }
 }
 
-// Componente reutilizable: Tarjeta de Métrica
 @Composable
 fun MetricCard(title: String, value: String, icon: ImageVector, color: Color, modifier: Modifier = Modifier) {
     Card(

@@ -46,7 +46,6 @@ fun DevicesScreen(viewModel: AppViewModel) {
     }
 }
 
-// Componente reutilizable: Tarjeta de Control de Dispositivo
 @Composable
 fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
     val stateColor = if (device.isActive) SuccessGreen else AlertRed.copy(alpha = 0.7f)
@@ -62,7 +61,6 @@ fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
                 .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icono del dispositivo
             Icon(
                 imageVector = device.icon,
                 contentDescription = device.name,
@@ -71,7 +69,6 @@ fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
             )
             Spacer(Modifier.width(16.dp))
 
-            // Nombre y estado
             Column(Modifier.weight(1f)) {
                 Text(device.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 Text(
@@ -80,8 +77,7 @@ fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
                     fontSize = 14.sp
                 )
             }
-
-            // Interruptor de control
+            
             Switch(
                 checked = device.isActive,
                 onCheckedChange = { onToggle() },

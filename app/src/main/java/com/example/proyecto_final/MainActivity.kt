@@ -34,16 +34,13 @@ import com.example.proyecto_final.interfaz.DevicesScreen
 
 enum class Screen { HOME, DEVICES, SECURITY }
 
-// Paleta de Colores
-val DarkBlue = Color(0xFF1E3A8A)      // Color principal (Primary)
-val LightBlue = Color(0xFF3B82F6)     // Color de acento (Secondary)
-val WarmGray = Color(0xFFF3F4F6)      // Fondo limpio (Background)
-val SuccessGreen = Color(0xFF10B981)  // Estado 'Seguro'
-val AlertRed = Color(0xFFEF4444)      // Estado 'Alerta/Abierto'
+val DarkBlue = Color(0xFF1E3A8A)
+val LightBlue = Color(0xFF3B82F6)
+val WarmGray = Color(0xFFF3F4F6)
+val SuccessGreen = Color(0xFF10B981)
+val AlertRed = Color(0xFFEF4444)
 
-/**
- * Define el tema Material 3 para la aplicación de Domótica.
- */
+
 @Composable
 fun DomoticaTheme(content: @Composable () -> Unit) {
     MaterialTheme(
@@ -61,20 +58,16 @@ fun DomoticaTheme(content: @Composable () -> Unit) {
 }
 
 class AppViewModel : ViewModel() {
-    // Estado actual de la pantalla de navegación.
     private val _currentScreen = MutableStateFlow(Screen.HOME)
     val currentScreen: StateFlow<Screen> = _currentScreen
 
-    // Estado de dispositivos controlables.
-    // Esto simula los datos que vendrían de tu Repositorio MQTT.
     private val _devices = MutableStateFlow(listOf(
         DeviceState(1, "Luz Sala", Icons.Default.Lightbulb, "Light", true),
         DeviceState(2, "Ventilador Cuarto", Icons.Default.AcUnit, "Fan", false),
         DeviceState(3, "Luz Cocina", Icons.Default.Lightbulb, "Light", false),
     ))
     val devices: StateFlow<List<DeviceState>> = _devices
-
-    // Estado de seguridad (sensores y puertas/ventanas).
+    
     private val _securityStatus = MutableStateFlow(listOf(
         SecurityState("Puerta Principal", false, false, SuccessGreen),
         SecurityState("Ventana Habitación", true, false, AlertRed),

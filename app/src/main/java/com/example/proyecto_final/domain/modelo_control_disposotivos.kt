@@ -7,5 +7,5 @@ data class DeviceState(
     val name: String,
     val icon: ImageVector,
     val type: String,
-    val isActive: Boolean // Estado ON/OFF
+    val isActive: Boolean
 )
