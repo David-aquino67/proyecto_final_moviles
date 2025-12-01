@@ -1,10 +1,11 @@
-package com.example.proyecto_final.interfaz
-
+package com.example.proyecto_final.ui.screens.pantalla_principal
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -19,15 +20,22 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.proyecto_final.*
-
+import com.example.proyecto_final.data.bluetooth.ConnectionStatus
+import com.example.proyecto_final.ui.screens.Screen
+import com.example.proyecto_final.ui.theme.AlertRed
+import com.example.proyecto_final.ui.theme.DarkBlue
+import com.example.proyecto_final.ui.theme.LightBlue
+import com.example.proyecto_final.ui.theme.SuccessGreen
+import com.example.proyecto_final.ui.viewmodel.AppViewModel
 @Composable
-fun HomeScreen(viewModel: AppViewModel) {
+fun HomeScreen(viewModel: AppViewModel = viewModel()) {
     val devices by viewModel.devices.collectAsState()
     val securityStatus by viewModel.securityStatus.collectAsState()
-
+    val btStatus by viewModel.btStatus.collectAsState()
     val activeLights = devices.count { it.type == "Light" && it.isActive }
-    val totalAlerts = securityStatus.count { it.isOpen || it.hasMotion }
+    val totalAlerts = securityStatus.count { !it.isLocked || it.hasMotion }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -43,8 +51,13 @@ fun HomeScreen(viewModel: AppViewModel) {
                 Text("Todo bajo control. Un vistazo rápido a tu sistema.", color = Color.White.copy(alpha = 0.8f))
             }
         }
+        Spacer(Modifier.height(16.dp))
+        BluetoothConnectionCard(
+            status = btStatus,
+            onConnect = { viewModel.connectToBluetooth() },
+            onDisconnect = { viewModel.disconnectBluetooth() }
+        )
         Spacer(Modifier.height(20.dp))
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -66,10 +79,8 @@ fun HomeScreen(viewModel: AppViewModel) {
             )
         }
         Spacer(Modifier.height(20.dp))
-
         val securityColor = if (totalAlerts > 0) AlertRed else SuccessGreen
         val securityText = if (totalAlerts > 0) "$totalAlerts Alerta Activa" else "Sistema Seguro"
-
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -94,26 +105,6 @@ fun HomeScreen(viewModel: AppViewModel) {
                 Spacer(Modifier.weight(1f))
                 Icon(Icons.Default.ArrowForward, contentDescription = "Ir a Seguridad", tint = Color.White)
             }
-        }
-    }
-}
-
-@Composable
-fun MetricCard(title: String, value: String, icon: ImageVector, color: Color, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(icon, contentDescription = title, tint = color, modifier = Modifier.size(24.dp))
-                Spacer(Modifier.width(8.dp))
-                Text(title, color = Color.Gray, fontSize = 14.sp)
-            }
-            Spacer(Modifier.height(8.dp))
-            Text(value, fontWeight = FontWeight.ExtraBold, fontSize = 28.sp, color = DarkBlue)
         }
     }
 }

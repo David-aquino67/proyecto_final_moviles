@@ -1,7 +1,8 @@
-package com.example.proyecto_final.interfaz
+package com.example.proyecto_final.ui.screens.pantalla_control_dispositivos
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -9,42 +10,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.proyecto_final.AlertRed
-import com.example.proyecto_final.AppViewModel
-import com.example.proyecto_final.SuccessGreen
-import com.example.proyecto_final.domain.DeviceState
-
-
-@Composable
-fun DevicesScreen(viewModel: AppViewModel) {
-    val devices by viewModel.devices.collectAsState()
-
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-        item {
-            Text(
-                "Control de Dispositivos",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-        }
-
-        devices.forEach { device ->
-            item {
-                DeviceControlCard(
-                    device = device,
-                    onToggle = { viewModel.toggleDevice(device.id) }
-                )
-                Spacer(Modifier.height(12.dp))
-            }
-        }
-    }
-}
+import com.example.proyecto_final.*
+import com.example.proyecto_final.domain.models.DeviceState
+import com.example.proyecto_final.domain.models.SecurityState
+import com.example.proyecto_final.ui.screens.pantalla_control_dispositivos.AccessControlCard
+import com.example.proyecto_final.ui.screens.pantalla_control_dispositivos.DeviceControlCard
+import com.example.proyecto_final.ui.theme.AlertRed
+import com.example.proyecto_final.ui.theme.SuccessGreen
 
 @Composable
 fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
@@ -61,6 +36,7 @@ fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
                 .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             Icon(
                 imageVector = device.icon,
                 contentDescription = device.name,
@@ -77,7 +53,6 @@ fun DeviceControlCard(device: DeviceState, onToggle: () -> Unit) {
                     fontSize = 14.sp
                 )
             }
-            
             Switch(
                 checked = device.isActive,
                 onCheckedChange = { onToggle() },

@@ -1,5 +1,4 @@
-package com.example.proyecto_final.domain
-
+package com.example.proyecto_final.domain.models
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class DeviceState(

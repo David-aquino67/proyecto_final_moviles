@@ -57,7 +57,24 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation("androidx.core:core-ktx:1.10.1") // Mantener si no está en libs.
+
+    // 4. Lifecycle y ViewModel (UNIFICADAS Y ACTUALIZADAS)
+    implementation(libs.androidx.lifecycle.runtime.ktx) // Opcional, pero bueno
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0") // Versión actual
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
+
+    // 5. Integración crucial de ViewModel y Flow con Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0") // Para viewModel()
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.0")   // Para collectAsState()
+
+    // 6. Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3") // Versión estable
+
+    // 7. Iconos Extendidos (Mantener si los usas)
     implementation("androidx.compose.material:material-icons-extended:1.7.0")
+
+    // TEST (Mantener tus dependencias de testing)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
 }
