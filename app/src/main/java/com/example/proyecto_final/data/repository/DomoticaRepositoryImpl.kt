@@ -18,10 +18,12 @@ class DomoticaRepositoryImpl(
         bluetoothService.send(cmd.trim() + "\n")
     }
 
-    override suspend fun togfgleDevice(id: Int, newState: Boolean) {
+    override suspend fun toggleDevice(id: Int, newState: Boolean) {
         val command = if (newState)
             "DEVICE_${id}_ON"
         else
+            "DEVICE_${id}_OFF"
+
         bluetoothService.send(command)
     }
 
