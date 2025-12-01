@@ -1,6 +1,7 @@
 package com.example.proyecto_final.ui.viewmodel
 import androidx.compose.material.icons.filled.AcUnit
 import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto_final.domain.models.DeviceState
@@ -76,21 +77,26 @@ class AppViewModel(public val repo: DomoticaRepository) : ViewModel() {
         _securityStatus.update { list ->
             list.map { security ->
                 if (security.id == id) {
+
                     val newLocked = !security.isLocked
 
-                    // mandar al repo
-                    viewModelScope.launch { repo.toggleLock(id, newLocked) }
+                    // MANDAR EL COMANDO REAL AL ESP32/ARDUINO
+                    viewModelScope.launch {
+                        if (security.sensorName.contains("Puerta", ignoreCase = true)) {
+                            repo.sendCommand(if (newLocked) "PUERTA:CERRAR" else "PUERTA:ABRIR")
+                        } else if (security.sensorName.contains("Ventana", ignoreCase = true)) {
+                            repo.sendCommand(if (newLocked) "VENTANA:CERRAR" else "VENTANA:ABRIR")
+                        }
+                    }
 
-                    val newColor = if (newLocked)
-                        androidx.compose.ui.graphics.Color.Green
-                    else
-                        androidx.compose.ui.graphics.Color.Red
+                    val newColor = if (newLocked) Color.Green else Color.Red
 
                     security.copy(isLocked = newLocked, statusColor = newColor)
                 } else security
             }
         }
     }
+
     fun connectToBluetooth() {
         viewModelScope.launch {
             repo.connect()
